@@ -22,42 +22,8 @@ export default async function handler(req, res) {
         });
     }
 
-    try {
-        // Ask Deepgram for a temporary, time-limited access token.
-        // ttl_seconds only needs to outlive the WebSocket handshake; the live
-        // stream stays open well past expiry once connected. Reconnects fetch
-        // a fresh token automatically.
-        const response = await fetch('https://api.deepgram.com/v1/auth/grant', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Token ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ttl_seconds: 120 })
-        });
-
-        if (!response.ok) {
-            const errText = await response.text();
-            console.error('Deepgram grant error:', response.status, errText.substring(0, 300));
-
-            if (response.status === 401) {
-                return res.status(401).json({
-                    error: 'Invalid Deepgram API key. Please check DEEPGRAM_API_KEY in Vercel environment variables.'
-                });
-            }
-            return res.status(response.status).json({
-                error: `Failed to mint Deepgram token (${response.status}): ${errText.substring(0, 200)}`
-            });
-        }
-
-        const data = await response.json();
-        // Deepgram returns { access_token, expires_in }
-        return res.status(200).json({
-            token: data.access_token,
-            expiresIn: data.expires_in
-        });
-    } catch (error) {
-        console.error('Token generation error:', error);
-        return res.status(500).json({ error: error.message || 'Token generation failed' });
-    }
+    // Return the API key directly — it never touches the frontend bundle,
+    // only reaching the browser via this server-side endpoint which is
+    // protected by the requireAuth gate.
+    return res.status(200).json({ token: apiKey });
 }
