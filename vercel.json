@@ -1,0 +1,22 @@
+{
+  "buildCommand": "echo 'No build required'",
+  "outputDirectory": ".",
+  "framework": null,
+  "functions": {
+    "api/transcribe.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoDoc - AI Medical Scribe for Healthcare Professionals</title>
+    <meta name="description" content="AI-powered medical transcription and clinical documentation for UK healthcare professionals.">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M4 12h2.5M9.5 7v10M15 4v16M20.5 8v8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <div class="brand-text">
+                        <h1>EchoDoc <span class="badge">AI Scribe</span></h1>
+                        <p class="brand-motto">Intelligent documentation for UK clinicians</p>
+                    </div>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link active">Clinical Scribe</a>
+                    <a href="dictation.html" class="nav-link">AI Dictation</a>
+                    <a href="notes-referral.html" class="nav-link">Notes to Referral</a>
+                    <a href="certificate.html" class="nav-link">Certificate Generator</a>
+                </div>
+                
+                <div class="dark-mode-toggle">
+                    <label class="dark-mode-label">
+                        <input type="checkbox" id="darkModeCheckbox" class="dark-mode-checkbox">
+                        <span class="dark-mode-slider"></span>
+                        <span class="dark-mode-icon" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="panel-left">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Session Controls</h3>
+                </div>
+                <div class="card-body">
+                    <div id="status" class="status">Ready to record</div>
+                    
+                    <div id="recordingTimer" class="recording-timer" style="display: none;">
+                        <div class="timer-info">
+                            <span class="timer-label">Time:</span>
+                            <span class="timer-value" id="timerElapsed">00:00</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mic-select-container-inline">
+                        <select id="microphoneDropdown" class="mic-dropdown">
+                            <option value="">Loading microphones...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-option">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="telephoneModeCheckbox" class="toggle-checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-title">Telephone Mode</span>
+                        </div>
+
+                        <div class="toggle-option">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="anonymizeCheckbox" class="toggle-checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-title">Anonymize Data</span>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group-controls">
+                        <button id="startBtn" class="btn btn-record"><span class="record-icon" aria-hidden="true"></span> Start recording</button>
+                        <button id="pauseBtn" class="btn btn-secondary" style="display: none;" type="button"><span class="pause-icon" aria-hidden="true"></span> Pause</button>
+                        <button id="stopBtn" class="btn btn-stop" style="display: none;" type="button"><span class="stop-icon" aria-hidden="true"></span> Finish</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>Live Transcript</h3>
+                    <button id="clearTranscript" class="btn-icon" title="Clear transcript" type="button" aria-label="Clear transcript"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <div id="transcript" class="transcript-box" contenteditable="true">
+                        <p class="placeholder">Awaiting audio input...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="panel-right">
+            
+            <div id="processingHub" class="processing-hub inactive">
+                <div class="hub-left">
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span id="hubStatusText">Awaiting Consultation...</span>
+                    </div>
+                </div>
+                <div class="hub-center">
+                    <span class="hub-message">Select specific documents to generate below.</span>
+                </div>
+                <div class="hub-right">
+                    <div class="token-saver-badge">Manual Mode Active</div>
+                </div>
+            </div>
+            
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Structured Clinical Summary (SOAP)</h3>
+                    <div class="card-actions">
+                        <button id="copySummary" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy SOAP note"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="summary" class="output-content" contenteditable="true">
+                        <p class="placeholder">Will generate only on command...</p>
+                    </div>
+                    <div class="manual-trigger-area">
+                        <button id="getSummary" class="btn btn-primary btn-small" type="button">
+                            Generate SOAP note
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Referral Letter</h3>
+                    <div class="card-actions">
+                        <button id="copyReferral" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy referral letter"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="referralLetter" class="output-content document-paper" contenteditable="true">
+                        <p class="placeholder">Will generate only on command...</p>
+                    </div>
+                    <div class="manual-trigger-area">
+                        <button id="generateReferral" class="btn btn-primary btn-small" type="button">
+                            Generate referral letter
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Patient Friendly Summary</h3>
+                    <div class="card-actions">
+                        <button id="copyPatientSummary" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy patient summary"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="patientSummary" class="output-content" contenteditable="true">
+                        <p class="placeholder">Will generate only on command...</p>
+                    </div>
+                    <div class="manual-trigger-area">
+                        <button id="generatePatientSummary" class="btn btn-primary btn-small" type="button">
+                            Generate patient version
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 EchoDoc. Clinical data privacy enabled.</p>
+        </div>
+    </footer>
+    
+    <script src="auth-client.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

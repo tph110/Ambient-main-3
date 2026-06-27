@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check app.js)",
+      "Bash(node --check api/deepgram-token.js)",
+      "Bash(grep -nE '\\\\$\\\\{\\(val\\\\\\(|cert\\\\.|today\\)' certificate.js)"
+    ]
+  }
+}

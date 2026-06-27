@@ -1,0 +1,1493 @@
+/* ================================================================
+   ECHODOC - PROFESSIONAL HEALTHTECH STYLES
+   Maintains two-panel dashboard layout with modern visual design
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ================================================================
+   CSS VARIABLES - Design System
+   ================================================================ */
+:root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --primary-color: #0369a1;
+    --primary-hover: #075985;
+    --primary-light: #e0f2fe;
+    --primary-muted: rgba(3, 105, 161, 0.08);
+
+    --bg-color: #eef2f7;
+    --bg-gradient: radial-gradient(1200px 600px at 10% -10%, rgba(3, 105, 161, 0.06), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(14, 165, 233, 0.05), transparent 50%);
+    --surface-color: #ffffff;
+    --surface-hover: #f4f7fb;
+    --surface-muted: #e8edf4;
+    
+    /* Text Colors */
+    --text-main: #1e293b;           /* Dark slate - easier to read than pure black */
+    --text-secondary: #64748b;      /* Medium slate */
+    --text-tertiary: #94a3b8;       /* Light slate */
+    
+    /* Borders & Dividers */
+    --border-color: #e2e8f0;
+    --border-hover: #cbd5e1;
+    
+    /* Shadows - Subtle depth */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* Status Colors */
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    --info-color: #3b82f6;
+    
+    /* Recording Red */
+    --recording-color: #ef4444;
+    --recording-bg: #fee2e2;
+    --recording-border: #fecaca;
+}
+
+/* ================================================================
+   DARK MODE VARIABLES
+   ================================================================ */
+body.dark-mode {
+    --bg-color: #0f172a;
+    --bg-gradient: radial-gradient(800px 400px at 15% 0%, rgba(56, 189, 248, 0.06), transparent 55%);
+    --surface-color: #1e293b;
+    --surface-hover: #334155;
+    --surface-muted: #0f172a;
+    
+    --text-main: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    
+    --border-color: #334155;
+    --border-hover: #475569;
+    
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+/* Dark Mode - Input fields match background */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .transcript-box,
+body.dark-mode .output-content,
+body.dark-mode #transcript,
+body.dark-mode #summary,
+body.dark-mode #formattedLetter {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus,
+body.dark-mode .transcript-box:focus,
+body.dark-mode .output-content:focus {
+    background: var(--surface-hover);
+    border-color: var(--primary-color);
+}
+
+/* ================================================================
+   BASE STYLES
+   ================================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-main);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================================================
+   TYPOGRAPHY
+   ================================================================ */
+h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text-main);
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--text-main);
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ================================================================
+   NAVBAR - Professional Medical App Header
+   ================================================================ */
+.navbar {
+    background: color-mix(in srgb, var(--surface-color) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 0.04);
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.brand-motto {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.brand-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: opacity 0.2s ease;
+}
+
+.brand-link:hover {
+    opacity: 0.92;
+}
+
+.brand-link h1 {
+    margin: 0;
+}
+
+a.brand-link {
+    text-decoration: none !important;
+}
+
+.brand-mark {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #0ea5e9 0%, var(--primary-color) 100%);
+    box-shadow: 0 4px 14px rgba(3, 105, 161, 0.35);
+}
+
+.brand-mark svg {
+    display: block;
+}
+
+.badge {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    margin-left: 8px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 4px;
+    background: var(--surface-muted);
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+}
+
+.nav-link {
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background: var(--surface-hover);
+    color: var(--text-main);
+}
+
+.nav-link.active {
+    background: var(--surface-color);
+    color: var(--primary-color);
+    border-color: transparent;
+    box-shadow: var(--shadow-xs);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface-hover);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success-color);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ================================================================
+   DASHBOARD LAYOUT - Two Panel Grid
+   ================================================================ */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;  /* FIXED: Changed from flex-start to start for Grid */
+}
+
+.panel-left {
+    position: sticky;
+    top: calc(80px + var(--spacing-md));
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-self: start;  /* ADDED: Ensure panel aligns to top */
+}
+
+.panel-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-self: start;  /* ADDED: Ensure panel aligns to top */
+}
+
+/* ================================================================
+   CARDS - Clean, Professional Surface Design
+   ================================================================ */
+.card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    margin-top: 0;  /* ADDED: Ensure no unintended top margin */
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface-hover);
+}
+
+.card-header h2,
+.card-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-main);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+/* Session Controls Card - Smaller text and better spacing */
+.panel-left .card-body {
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.panel-left .card-body label {
+    font-size: 0.8125rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.panel-left .card-body p {
+    font-size: 0.8125rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Add spacing after telephone mode description */
+.telephone-mode-info,
+.panel-left .card-body > div:has(input[type="checkbox"]) {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ================================================================
+   BUTTONS - Modern, Trustworthy Design
+   ================================================================ */
+button, .btn {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
+}
+
+button:hover, .btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+button:active, .btn:active {
+    transform: translateY(0);
+}
+
+button:disabled, .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Primary Action Button - NHS Medical Blue */
+.btn-accent,
+.btn-record {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgba(3, 105, 161, 0.3);
+}
+
+.btn-accent:hover,
+.btn-record:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 10px -1px rgba(3, 105, 161, 0.4);
+}
+
+/* Recording State - Pulsing Red */
+.btn-record.recording,
+.recording-badge {
+    background: var(--recording-bg);
+    color: var(--recording-color);
+    border: 1px solid var(--recording-border);
+    animation: pulse-recording 2s infinite;
+}
+
+@keyframes pulse-recording {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Button Variations */
+.btn-secondary {
+    background: var(--surface-hover);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.btn-outline:hover {
+    background: var(--surface-hover);
+}
+
+.btn-small {
+    padding: 6px 14px;
+    font-size: 0.875rem;
+}
+
+.btn-icon {
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+}
+
+/* Button Group - Add spacing to push down from status bar */
+.button-group-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-lg);
+}
+
+/* Ensure button text is always visible in dark mode */
+body.dark-mode button,
+body.dark-mode .btn,
+body.dark-mode .btn-secondary,
+body.dark-mode .btn-outline {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .btn-accent,
+body.dark-mode .btn-record {
+    color: white !important;
+}
+
+body.dark-mode .btn-record.recording {
+    color: var(--recording-color) !important;
+}
+
+/* Specific fix for Pause and Resume buttons in dark mode */
+body.dark-mode #pauseBtn,
+body.dark-mode #resumeBtn,
+body.dark-mode button[id*="pause"],
+body.dark-mode button[id*="resume"],
+body.dark-mode .btn-pause,
+body.dark-mode .btn-resume {
+    color: var(--text-main) !important;
+    background: var(--surface-hover) !important;
+}
+
+body.dark-mode #pauseBtn:hover,
+body.dark-mode #resumeBtn:hover {
+    color: var(--text-main) !important;
+}
+
+/* ================================================================
+   STOP/FINISH BUTTON - Ensure Visibility in All Modes
+   ================================================================ */
+
+/* Light mode: Stop button should have proper visibility */
+#stopBtn,
+button[id="stopBtn"],
+.btn-stop {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+#stopBtn:hover,
+button[id="stopBtn"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%) !important;
+    color: #ffffff !important;
+}
+
+#stopBtn:disabled,
+button[id="stopBtn"]:disabled {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%) !important;
+    color: #64748b !important;
+    opacity: 0.6;
+}
+
+/* Dark mode: Stop button maintains same styling */
+body.dark-mode #stopBtn,
+body.dark-mode button[id="stopBtn"],
+body.dark-mode .btn-stop {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+body.dark-mode #stopBtn:hover,
+body.dark-mode button[id="stopBtn"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode #stopBtn:disabled,
+body.dark-mode button[id="stopBtn"]:disabled {
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important;
+    color: #64748b !important;
+}
+
+/* ================================================================
+   FORMS & INPUTS - Clean Medical Interface
+   ================================================================ */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-color);
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.1);
+    background: white;
+}
+
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+/* Microphone Dropdown */
+.mic-select-container-inline {
+    margin-bottom: var(--spacing-md);
+}
+
+.mic-select-container-inline label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.mic-dropdown {
+    width: 100%;
+}
+
+/* ================================================================
+   TRANSCRIPT & EDITOR AREAS - Paper-like Surface
+   ================================================================ */
+.transcript-box,
+.output-content,
+#transcript,
+#summary,
+#formattedLetter {
+    min-height: 200px;
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #fafafa;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--text-main);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.transcript-box:focus,
+.output-content:focus {
+    background: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.1);
+    outline: none;
+}
+
+.placeholder {
+    color: var(--text-tertiary);
+    font-style: italic;
+}
+
+/* Document Paper Style */
+.document-paper,
+.letter-content {
+    background: white;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ================================================================
+   STATUS & FEEDBACK ELEMENTS
+   ================================================================ */
+.status {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-align: center;
+    background: var(--surface-hover);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.status.recording {
+    background: var(--recording-bg);
+    color: var(--recording-color);
+    border-color: var(--recording-border);
+}
+
+/* Recording Timer */
+.recording-timer {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--surface-hover);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.timer-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.875rem;
+}
+
+.timer-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.timer-value {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: var(--spacing-sm) 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+/* ================================================================
+   ACTIONS BAR
+   ================================================================ */
+.actions-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.footer {
+    background: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    text-align: center;
+}
+
+.footer-content p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 4px 0;
+}
+
+.footer-disclaimer {
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+}
+
+/* ================================================================
+   PRIVACY & DISCLAIMER
+   ================================================================ */
+.ai-disclaimer {
+    background: transparent;
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+    padding: var(--spacing-sm) 0;
+    border: none;
+    margin-bottom: var(--spacing-sm);
+}
+
+.privacy-card {
+    background: var(--surface-hover);
+}
+
+/* ================================================================
+   RESPONSIVE DESIGN
+   ================================================================ */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        padding: var(--spacing-lg);
+    }
+    
+    .panel-left {
+        position: static;
+    }
+    
+    .nav-content {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar-right {
+        gap: var(--spacing-sm);
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .dashboard-container {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+    
+    .card-header,
+    .card-body {
+        padding: var(--spacing-md);
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* ================================================================
+   UTILITY CLASSES
+   ================================================================ */
+.text-primary {
+    color: var(--primary-color);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.text-error {
+    color: var(--error-color);
+}
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+/* ================================================================
+   ANIMATIONS & TRANSITIONS
+   ================================================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Theme-friendly transitions (avoid `* { transition }` for performance) */
+body,
+.navbar,
+.card,
+.card-header,
+.footer,
+.processing-hub,
+.transcript-box,
+.output-content {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+button, .btn, .card, input, select, textarea {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+        box-shadow 0.2s ease, transform 0.15s ease;
+}
+/* FIX: Hide actions-bar when button is hidden */
+.actions-bar {
+    margin-bottom: 0 !important;
+}
+
+.actions-bar:has(button[style*="display: none"]),
+.actions-bar:has(button:not([style*="display"])) {
+    display: none !important;
+}
+
+/* Alternative: Just remove all margin from actions-bar */
+.panel-right > .actions-bar:first-child {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+/* When button IS visible, add margin */
+.actions-bar:has(button[style*="display: inline"]),
+.actions-bar:has(button[style*="display: flex"]) {
+    display: flex !important;
+    margin-bottom: var(--spacing-lg) !important;
+}
+/* ================================================================
+   DARK MODE TOGGLE SWITCH
+   Add this to the END of your styles.css file
+   ================================================================ */
+
+/* Dark Mode Toggle Container */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    margin-left: var(--spacing-md);
+}
+
+/* Toggle Switch Label (Container) */
+.dark-mode-label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    cursor: pointer;
+}
+
+/* Hide the actual checkbox */
+.dark-mode-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider background */
+.dark-mode-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    border-radius: 26px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* The slider circle/knob */
+.dark-mode-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* When checked - change background color */
+.dark-mode-checkbox:checked + .dark-mode-slider {
+    background-color: var(--primary-color);
+}
+
+/* When checked - slide the circle to the right */
+.dark-mode-checkbox:checked + .dark-mode-slider:before {
+    transform: translateX(24px);
+}
+
+/* Moon icon (replaces emoji in HTML) */
+.dark-mode-icon {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-color: var(--text-tertiary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'/%3E%3C/svg%3E") center / contain no-repeat;
+    pointer-events: none;
+    user-select: none;
+}
+
+body.dark-mode .dark-mode-icon {
+    background-color: #94a3b8;
+}
+
+/* Hover effect */
+.dark-mode-label:hover .dark-mode-slider {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(3, 105, 161, 0.1);
+}
+
+/* Active/pressed effect */
+.dark-mode-checkbox:active + .dark-mode-slider:before {
+    width: 24px;
+}
+
+/* Focus outline for accessibility */
+.dark-mode-checkbox:focus + .dark-mode-slider {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(3, 105, 161, 0.3);
+}
+
+/* Dark mode - adjust colors */
+body.dark-mode .dark-mode-slider {
+    background-color: var(--border-color);
+}
+
+body.dark-mode .dark-mode-slider:before {
+    background-color: var(--surface-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .dark-mode-checkbox:checked + .dark-mode-slider {
+    background-color: var(--primary-color);
+}
+
+/* Responsive - make slightly smaller on mobile */
+@media (max-width: 640px) {
+    .dark-mode-label {
+        width: 44px;
+        height: 22px;
+    }
+    
+    .dark-mode-slider:before {
+        height: 16px;
+        width: 16px;
+    }
+    
+    .dark-mode-checkbox:checked + .dark-mode-slider:before {
+        transform: translateX(22px);
+    }
+    
+    .dark-mode-icon {
+        width: 16px;
+        height: 16px;
+        right: -26px;
+    }
+}
+/* ================================================================
+   SESSION CONTROLS TOGGLE SWITCHES
+   Add this to your styles.css (after the dark mode toggle CSS)
+   ================================================================ */
+
+/* Toggle Option Container */
+.toggle-option {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Toggle Label (the switch itself) */
+.toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin-top: 2px;  /* Align with text */
+}
+
+/* Hide the actual checkbox */
+.toggle-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider background */
+.toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* The slider circle/knob */
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* When checked - change background color */
+.toggle-checkbox:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+/* When checked - slide the circle to the right */
+.toggle-checkbox:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+/* Toggle Text Container */
+.toggle-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Toggle Title */
+.toggle-title {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-main);
+    display: block;
+}
+
+/* Toggle Description */
+.toggle-description {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Hover effect */
+.toggle-label:hover .toggle-slider {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(3, 105, 161, 0.1);
+}
+
+/* Active/pressed effect */
+.toggle-checkbox:active + .toggle-slider:before {
+    width: 22px;
+}
+
+/* Focus outline for accessibility */
+.toggle-checkbox:focus + .toggle-slider {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(3, 105, 161, 0.3);
+    outline: none;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .toggle-slider {
+    background-color: var(--border-color);
+}
+
+body.dark-mode .toggle-slider:before {
+    background-color: var(--surface-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .toggle-checkbox:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+body.dark-mode .toggle-checkbox:checked + .toggle-slider:before {
+    background-color: white;
+}
+
+body.dark-mode .toggle-title {
+    color: var(--text-main);
+}
+
+body.dark-mode .toggle-description {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .nav-links {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .nav-link:hover {
+    background: var(--surface-hover);
+}
+
+/* Remove old checkbox styling if it exists */
+.telephone-mode-container label,
+.anonymization-container label {
+    display: block;
+}
+
+/* Ensure containers don't have extra margins */
+.telephone-mode-container,
+.anonymization-container {
+    margin-bottom: var(--spacing-md);
+}
+
+/* Remove the old inline styles when using toggle switches */
+.toggle-option label {
+    margin: 0;
+    padding: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .toggle-option {
+        gap: var(--spacing-sm);
+    }
+    
+    .toggle-label {
+        width: 40px;
+        height: 22px;
+    }
+    
+    .toggle-slider:before {
+        height: 16px;
+        width: 16px;
+    }
+    
+    .toggle-checkbox:checked + .toggle-slider:before {
+        transform: translateX(18px);
+    }
+}
+.helper-text {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-left: 3px solid var(--primary-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+body.dark-mode .helper-text {
+    background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
+    color: var(--text-secondary);
+}
+.processing-hub {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    background: var(--surface-color);
+    padding: 14px 22px;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: opacity 0.35s ease, filter 0.35s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.processing-hub .hub-left,
+.processing-hub .hub-center,
+.processing-hub .hub-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.processing-hub .hub-center {
+    flex: 1;
+    justify-content: center;
+    min-width: min(100%, 220px);
+    text-align: center;
+}
+
+.processing-hub .hub-message {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.processing-hub.inactive {
+    opacity: 0.55;
+    filter: grayscale(1);
+    pointer-events: none;
+    background: var(--surface-hover);
+}
+
+.processing-hub.active {
+    opacity: 1;
+    filter: grayscale(0);
+    border-color: color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+    background: linear-gradient(105deg, var(--surface-color) 0%, var(--primary-light) 100%);
+}
+
+/* Hub status dot only — avoids clobbering .status-indicator .status-dot elsewhere */
+.processing-hub .status-dot {
+    width: 8px;
+    height: 8px;
+    margin-right: 0;
+    background-color: #cbd5e1;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    animation: none;
+}
+
+.processing-hub.active .status-dot {
+    background-color: var(--success-color);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.45);
+    animation: hub-pulse-dot 2s ease infinite;
+}
+
+@keyframes hub-pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+body.dark-mode .processing-hub {
+    background: var(--surface-color);
+}
+
+body.dark-mode .processing-hub.inactive {
+    background: var(--surface-hover);
+}
+
+body.dark-mode .processing-hub.active {
+    background: linear-gradient(105deg, var(--surface-color) 0%, rgba(3, 105, 161, 0.18) 100%);
+}
+
+.processing-hub.active .primary-hub-btn,
+.pulse-highlight {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(3, 105, 161, 0.22);
+    animation: gentlePulse 2s infinite;
+}
+
+@keyframes gentlePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.token-saver-badge {
+    font-size: 0.6875rem;
+    padding: 6px 10px;
+    background: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+body.dark-mode .token-saver-badge {
+    background: var(--surface-muted);
+    color: var(--text-tertiary);
+}
+
+/* --- Layout polish: actions, toggles, primary CTA, recording affordances --- */
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.manual-trigger-area {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-start;
+}
+
+.toggle-group {
+    padding: var(--spacing-md);
+    background: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.output-card {
+    border-left: 3px solid var(--primary-color);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: #fff !important;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(3, 105, 161, 0.28);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 16px rgba(3, 105, 161, 0.35);
+}
+
+body.dark-mode .btn-primary {
+    color: #fff !important;
+}
+
+.btn-icon {
+    color: var(--text-secondary);
+}
+
+.btn-icon .icon-svg {
+    display: block;
+    pointer-events: none;
+}
+
+.btn-icon:hover {
+    color: var(--primary-color);
+    background: var(--primary-muted);
+    border-color: transparent;
+}
+
+.btn-icon.is-copied {
+    color: #fff !important;
+    background: var(--success-color) !important;
+    border-color: transparent !important;
+}
+
+.record-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+    flex-shrink: 0;
+}
+
+body.dark-mode .record-icon {
+    box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.9);
+}
+
+.pause-icon {
+    display: inline-block;
+    width: 0;
+    height: 12px;
+    border-left: 4px solid currentColor;
+    border-right: 4px solid currentColor;
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+.stop-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: currentColor;
+    flex-shrink: 0;
+    opacity: 0.95;
+}
+
+/* Certificate & empty states */
+.placeholder-cert {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.placeholder-cert .placeholder-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 22%, var(--border-color));
+}
+
+body.dark-mode .placeholder-cert .placeholder-icon {
+    background: rgba(3, 105, 161, 0.2);
+    border-color: var(--border-color);
+}

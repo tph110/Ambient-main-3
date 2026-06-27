@@ -1,0 +1,291 @@
+/* ==========================================
+   ECHODOC DICTATION - DESIGN SYSTEM
+   ========================================== */
+
+/* CRITICAL: Force grid layout on desktop */
+.dictation-container {
+    display: block;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+@media screen and (min-width: 1024px) {
+    .dictation-container {
+        display: grid !important;
+        grid-template-columns: 380px 1fr !important;
+        grid-gap: 32px !important;
+        gap: 32px !important;
+        align-items: start !important;
+    }
+    
+    aside.panel-left {
+        grid-column: 1 !important;
+        position: sticky !important;
+        top: 100px !important;
+        align-self: start !important;
+    }
+    
+    main.panel-right {
+        grid-column: 2 !important;
+        min-width: 0 !important;
+    }
+}
+
+/* Card base styles */
+.card {
+    background: var(--surface-color, #fff);
+    border-radius: var(--radius-lg, 14px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgb(0 0 0 / 0.1));
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.card-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h2, .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main, #1e293b);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Transcription & Letter Boxes */
+.transcript-box, .letter-content {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    transition: all 0.2s ease;
+}
+
+.transcript-box {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+.letter-content {
+    min-height: 400px;
+    max-height: 800px;
+    font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+    line-height: 1.8;
+}
+
+/* ==========================================
+   BUTTONS - Compact version for card headers
+   ========================================== */
+
+.btn-accent-small {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #075985 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-md, 10px);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-accent-small:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(3, 105, 161, 0.35);
+}
+
+.btn-accent-small:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Dark mode button styling */
+body.dark-mode .btn-accent-small {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #075985 100%);
+    color: white;
+}
+
+body.dark-mode .btn-accent-small:disabled {
+    background: #334155;
+    color: #64748b;
+}
+
+/* ==========================================
+   DARK MODE SUPPORT
+   ========================================== */
+
+body.dark-mode {
+    background-color: #0f172a;
+    color: #f1f5f9;
+}
+
+body.dark-mode .card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark-mode .card-header h2, 
+body.dark-mode .card-header h3 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .transcript-box, 
+body.dark-mode .letter-content {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Utilities */
+.status {
+    padding: 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    margin: 12px 0;
+}
+
+.status.recording {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.ai-disclaimer {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 10px;
+    font-size: 0.85rem;
+    color: #92400e;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+body.dark-mode .ai-disclaimer {
+    background: #422006;
+    color: #fde68a;
+    border-left-color: #f59e0b;
+}
+
+/* Card Header Layout Adjustment */
+.card-header .header-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Letter actions (copy, download buttons) */
+.letter-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: var(--radius-md, 10px);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.btn-icon:hover {
+    background: var(--primary-muted);
+    color: var(--primary-color);
+}
+
+body.dark-mode .btn-icon:hover {
+    background: var(--primary-muted);
+    color: var(--primary-color);
+}
+
+/* Commands card styling */
+.commands-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.command-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+body.dark-mode .command-item {
+    background: #0f172a;
+}
+
+.command-say {
+    color: #475569;
+    font-weight: 500;
+}
+
+body.dark-mode .command-say {
+    color: #cbd5e1;
+}
+
+.command-result {
+    color: #64748b;
+    font-size: 0.8125rem;
+}
+
+body.dark-mode .command-result {
+    color: #94a3b8;
+}
+
+.commands-note {
+    margin-top: 12px;
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+body.dark-mode .commands-note {
+    color: #94a3b8;
+}
+
+/* Placeholder text */
+.placeholder {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+body.dark-mode .placeholder {
+    color: #64748b;
+}

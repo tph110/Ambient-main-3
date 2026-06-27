@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoDoc - Notes to Referral</title>
+    <meta name="description" content="Paste consultation notes and generate a secondary care referral letter instantly.">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M4 12h2.5M9.5 7v10M15 4v16M20.5 8v8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <div class="brand-text">
+                        <h1>EchoDoc <span class="badge">AI Scribe</span></h1>
+                        <p class="brand-motto">Intelligent documentation for UK clinicians</p>
+                    </div>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Clinical Scribe</a>
+                    <a href="dictation.html" class="nav-link">AI Dictation</a>
+                    <a href="notes-referral.html" class="nav-link active">Notes to Referral</a>
+                    <a href="certificate.html" class="nav-link">Certificate Generator</a>
+                </div>
+                <div class="dark-mode-toggle">
+                    <label class="dark-mode-label">
+                        <input type="checkbox" id="darkModeCheckbox" class="dark-mode-checkbox">
+                        <span class="dark-mode-slider"></span>
+                        <span class="dark-mode-icon" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <!-- LEFT PANEL: Inputs -->
+        <aside class="panel-left">
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Consultation notes</h3>
+                </div>
+                <div class="card-body">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+                        Paste your existing notes — EMIS/SystmOne entries, typed notes, or a brief summary of the consultation.
+                    </p>
+                    <textarea
+                        id="notesInput"
+                        class="notes-textarea"
+                        placeholder="e.g. 62F with 3/12 history of worsening exertional dyspnoea. Mild bilateral leg oedema. BP 148/92, HR 88. BNP elevated at 420. CXR shows cardiomegaly. On amlodipine 5mg and ramipril 5mg. Ex-smoker. Referred to cardiology for further assessment and echo..."
+                        rows="14"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Additional instructions</h3>
+                </div>
+                <div class="card-body">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+                        Please specify specialty, urgency, or anything extra to include or emphasise.
+                    </p>
+                    <textarea
+                        id="instructionsInput"
+                        class="notes-textarea"
+                        placeholder="e.g. Referring to cardiology. Routine urgency. Please mention that patient is anxious about the diagnosis and would appreciate early reassurance."
+                        rows="6"
+                    ></textarea>
+                    <div class="manual-trigger-area" style="margin-top: 16px;">
+                        <button id="generateBtn" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 14px;" type="button">
+                            Generate referral letter
+                        </button>
+                    </div>
+                    <div id="statusMsg" class="status" style="margin-top: 12px; display: none;"></div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- RIGHT PANEL: Output -->
+        <main class="panel-right">
+
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Referral letter</h3>
+                    <div class="card-actions">
+                        <button id="copyBtn" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy referral letter"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                        <button id="clearBtn" class="btn-icon" title="Clear output" type="button" aria-label="Clear output"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div
+                        id="letterOutput"
+                        class="output-content document-paper"
+                        contenteditable="true"
+                    >
+                        <p class="placeholder">Your referral letter will appear here. You can edit it before copying.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 EchoDoc. Clinical data privacy enabled.</p>
+        </div>
+    </footer>
+
+    <script src="auth-client.js"></script>
+    <script src="notes-referral.js"></script>
+</body>
+</html>

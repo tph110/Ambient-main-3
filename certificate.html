@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoDoc - Oxford Certificate Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <style>
+        /* Certificate-specific styles */
+        .cert-wrapper {
+            font-family: 'Georgia', serif;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .cert-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .cert-subtitle {
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .cert-section {
+            border-top: 1px solid var(--border-color);
+            padding: 14px 0 8px;
+        }
+
+        .cert-section-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .cert-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .cert-field {
+            margin-bottom: 12px;
+        }
+
+        .cert-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+            font-style: italic;
+        }
+
+        .cert-value {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+            min-height: 22px;
+        }
+
+        .cert-value.empty {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .cert-value.highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .cert-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .cert-badge.yes { background: #dcfce7; color: #166534; }
+        .cert-badge.no { background: #fee2e2; color: #991b1b; }
+        .cert-badge.unknown { background: #fef9c3; color: #854d0e; }
+        .cert-badge.recommended { background: #dbeafe; color: #1e40af; }
+        .cert-badge.not-recommended { background: #f3f4f6; color: #374151; }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .impact-item {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+
+        .impact-item-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        .impact-item-value {
+            font-size: 0.88rem;
+            color: var(--text-primary);
+        }
+
+        .impact-item-value.none {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .doctor-block {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .doctor-block strong {
+            color: var(--text-primary);
+        }
+
+        .placeholder-cert {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .placeholder-cert .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .disclaimer-banner {
+            background: #fef9c3;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            color: #92400e;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M4 12h2.5M9.5 7v10M15 4v16M20.5 8v8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <div class="brand-text">
+                        <h1>EchoDoc <span class="badge">AI Scribe</span></h1>
+                        <p class="brand-motto">Intelligent documentation for UK clinicians</p>
+                    </div>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Clinical Scribe</a>
+                    <a href="dictation.html" class="nav-link">AI Dictation</a>
+                    <a href="notes-referral.html" class="nav-link">Notes to Referral</a>
+                    <a href="certificate.html" class="nav-link active">Certificate Generator</a>
+                </div>
+                <div class="dark-mode-toggle">
+                    <label class="dark-mode-label">
+                        <input type="checkbox" id="darkModeCheckbox" class="dark-mode-checkbox">
+                        <span class="dark-mode-slider"></span>
+                        <span class="dark-mode-icon" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <!-- LEFT PANEL: Input -->
+        <aside class="panel-left">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Consultation notes</h3>
+                </div>
+                <div class="card-body">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+                        Paste your notes from the student's consultation. The AI will complete all fields of the Oxford Medical Certificate. Leave the patient name blank — add it yourself before submission.
+                    </p>
+                    <textarea
+                        id="notesInput"
+                        class="notes-textarea"
+                        placeholder="e.g. 20F, 2nd year Medicine at Christ Church. Presenting with worsening anxiety and depressive symptoms over past 6 weeks in context of family bereavement. Sleep significantly disturbed. Struggling to concentrate, reading taking much longer than usual. Attended 3 times in past month. Diagnosed with mild-moderate depressive episode (ICD-10 F32.1). On sertraline 50mg commenced 2 weeks ago. Currently unwell and would benefit from extended deadline for collections and alternative arrangements for Hilary term exams..."
+                        rows="16"
+                    ></textarea>
+                    <div class="manual-trigger-area" style="margin-top: 14px;">
+                        <button id="generateBtn" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 14px;" type="button">
+                            Complete certificate
+                        </button>
+                    </div>
+                    <div id="statusMsg" class="status" style="margin-top: 10px; display: none;"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT PANEL: Completed Certificate -->
+        <main class="panel-right">
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Oxford medical certificate</h3>
+                    <div class="card-actions">
+                        <button id="copyBtn" class="btn-icon" title="Copy all text to clipboard" type="button" aria-label="Copy certificate"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                        <button id="clearBtn" class="btn-icon" title="Clear" type="button" aria-label="Clear certificate"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="certificateOutput">
+                        <div class="placeholder-cert">
+                            <div class="placeholder-icon" aria-hidden="true"></div>
+                            <p>Paste consultation notes and click <strong>Complete certificate</strong>.</p>
+                            <p style="font-size: 0.8rem; margin-top: 8px;">All fields will be filled automatically. Add the patient name yourself before submitting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 EchoDoc. Clinical data privacy enabled.</p>
+        </div>
+    </footer>
+
+    <script src="auth-client.js"></script>
+    <script src="certificate.js"></script>
+</body>
+</html>

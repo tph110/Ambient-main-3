@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Dictation - EchoDoc</title>
+    <meta name="description" content="Voice dictation for writing letters with automatic formatting">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dictation-style.css">
+    
+    <style>
+        /* Force two-column layout on desktop */
+        @media screen and (min-width: 1024px) {
+            .dictation-container {
+                display: grid !important;
+                grid-template-columns: 380px 1fr !important;
+                gap: 32px !important;
+            }
+            aside.panel-left { 
+                grid-column: 1 !important; 
+                position: sticky !important; 
+                top: 100px !important;
+            }
+            main.panel-right { 
+                grid-column: 2 !important; 
+            }
+        }
+
+        /* Professional Letter Type Selector */
+        .letter-type-selector-pro {
+            margin-bottom: 20px;
+        }
+
+        .letter-type-selector-pro label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .select-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .letter-type-dropdown-pro {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1e293b;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-family: inherit;
+        }
+
+        .letter-type-dropdown-pro:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .letter-type-dropdown-pro:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #64748b;
+            font-size: 0.7rem;
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode .letter-type-selector-pro label { color: #94a3b8; }
+        body.dark-mode .letter-type-dropdown-pro {
+            background: #1e293b;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        body.dark-mode .letter-type-dropdown-pro:hover { background: #0f172a; }
+        body.dark-mode .select-arrow { color: #94a3b8; }
+
+        .ai-disclaimer {
+            background: transparent !important;
+            color: #94a3b8 !important;
+            border: none !important;
+            padding: 8px 0 !important;
+            font-size: 0.875rem !important;
+        }
+
+        body.dark-mode .ai-disclaimer { color: #64748b !important; }
+        body.dark-mode .mic-select-container-inline label { color: #f1f5f9 !important; }
+
+        /* Hub Styling */
+        .hub-status-text {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="brand">
+                <a href="https://ambientdoc.vercel.app" class="brand-link">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M4 12h2.5M9.5 7v10M15 4v16M20.5 8v8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <div class="brand-text">
+                        <h1>EchoDoc <span class="badge">AI Dictation</span></h1>
+                        <p class="brand-motto">Effortlessly dictate letters and let EchoDoc handle the rest</p>
+                    </div>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Clinical Scribe</a>
+                    <a href="dictation.html" class="nav-link active">AI Dictation</a>
+                    <a href="notes-referral.html" class="nav-link">Notes to Referral</a>
+                    <a href="certificate.html" class="nav-link">Certificate Generator</a>
+                </div>
+                
+                <div class="status-indicator" id="connectionStatus">
+                    <span class="status-dot"></span>
+                </div>
+                
+                <div class="dark-mode-toggle">
+                    <label class="dark-mode-label">
+                        <input type="checkbox" id="darkModeCheckbox" class="dark-mode-checkbox">
+                        <span class="dark-mode-slider"></span>
+                        <span class="dark-mode-icon" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dictation-container">
+        <aside class="panel-left">
+            <div class="card control-card">
+                <div class="card-header">
+                    <h2>Dictation Controls</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mic-select-container-inline">
+                        <label for="microphoneDropdown">Audio input:</label>
+                        <select id="microphoneDropdown" class="mic-dropdown">
+                            <option value="">Loading microphones...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="letter-type-selector-pro">
+                        <label for="letterType">Select Letter Type</label>
+                        <div class="select-wrapper">
+                            <select id="letterType" class="letter-type-dropdown-pro">
+                                <option value="free-text">Free Text (No Formatting)</option>
+                                <option value="general">General Letter</option>
+                                <option value="meeting-minutes">Meeting Minutes</option>
+                                <option value="referral">Referral Letter</option>
+                                <option value="sick-note">Sick Note / Fit Note</option>
+                                <option value="to-whom">To Whom It May Concern</option>
+                                <option value="patient">Letter to Patient</option>
+                            </select>
+                            <span class="select-arrow">▼</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status" id="status">Ready to dictate</div>
+                    
+                    <div class="button-group-controls">
+                        <button id="startBtn" class="btn btn-record">
+                            <span class="record-icon"></span> Start Dictating
+                        </button>
+                        <button id="pauseBtn" class="btn btn-pause" style="display: none;">
+                            <span class="pause-icon"></span> Pause
+                        </button>
+                        <button id="stopBtn" class="btn btn-stop" style="display: none;">
+                            <span class="stop-icon"></span> Finish
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card commands-card">
+                <div class="card-header"><h2>Voice Commands</h2></div>
+                <div class="card-body">
+                    <div class="commands-list">
+                        <div class="command-item"><span class="command-say">"New paragraph"</span><span class="command-result">→ New Para</span></div>
+                        <div class="command-item"><span class="command-say">"Full stop"</span><span class="command-result">→ Add (.)</span></div>
+                        <div class="command-item"><span class="command-say">"Comma"</span><span class="command-result">→ Add (,)</span></div>
+                    </div>
+                    <p class="commands-note">AI will handle formatting automatically</p>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="panel-right">
+            <div class="card transcript-card">
+                <div class="card-header">
+                    <h2>Raw Transcription</h2>
+                    <button id="clearTranscript" class="btn-icon" title="Clear transcript" type="button" aria-label="Clear transcript"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <div class="card-body">
+                    <div id="transcript" class="transcript-box" contenteditable="true">
+                        <p class="placeholder">Your dictation will appear here as raw text...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card letter-card">
+                <div class="card-header">
+                    <div class="header-main">
+                        <h3>Formatted Letter</h3>
+                        <button id="formatLetterBtn" class="btn-accent-small" disabled type="button">
+                            Generate letter
+                        </button>
+                    </div>
+                    <div class="letter-actions">
+                        <button id="copyLetter" class="btn-icon copy-btn" title="Copy to clipboard" type="button" aria-label="Copy letter"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                        <button id="downloadLetter" class="btn-icon download-btn" title="Download" type="button" aria-label="Download letter"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="ai-disclaimer">AI can make mistakes. Verify clinical content.</p>
+                    <div id="formattedLetter" class="letter-content" contenteditable="true">
+                        <p class="placeholder">Formatted letter will appear here after clicking 'Generate'...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <p>EchoDoc &copy; 2026 · Letter dictation</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle Logic
+        const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+        if (localStorage.getItem('echodoc-dark-mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeCheckbox.checked = true;
+        }
+        darkModeCheckbox.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('echodoc-dark-mode', this.checked ? 'true' : 'false');
+        });
+    </script>
+    <script src="auth-client.js"></script>
+    <script src="dictation.js"></script>
+</body>
+</html>
