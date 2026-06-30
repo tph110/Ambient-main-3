@@ -1,18 +1,14 @@
 // File: /api/summarize.js
 // OpenRouter AI endpoint for generating clinical summaries
 
-import { requireAuth } from '../lib/auth.js';
-
 export default async function handler(req, res) {
     console.log('=== Summarize API Called ===');
     console.log('Method:', req.method);
-
+    
     if (req.method !== 'POST') {
         console.log('Error: Method not allowed');
         return res.status(405).json({ error: 'Method not allowed' });
     }
-
-    if (!requireAuth(req, res)) return;
 
     try {
         const { transcript, type } = req.body;
@@ -99,15 +95,17 @@ Dear Colleague,
 
 Re: Mrs Jane Smith, DoB: 15/03/1960, NHS No: 123 456 7890
 
-please could you review this 66 year old lady regarding her chronic right knee pain.
+I would be grateful if you could see this patient regarding chronic right knee pain.
 
 Mrs Smith has been experiencing progressive right knee pain for the past six months. The pain is worse on weight-bearing and after prolonged sitting, and she reports hearing clicking sounds when walking. She has tried paracetamol and ibuprofen with minimal benefit, and the pain is now significantly impacting her ability to work as a teacher.
 
-Her past medical history includes hypertension, well-controlled on ramipril 5mg once daily. She has no known drug allergies. She is a non-smoker and drinks 6 units of alcohol per week. She is active and fully independent and mobile. 
+Her past medical history includes hypertension, well-controlled on ramipril 5mg once daily. She has no known drug allergies. She is a non-smoker and drinks alcohol socially.
 
-Examination revealed mild joint effusion and tenderness over the medial joint line. There is reduced range of movement with flexion limited to 110 degrees. Her X-ray shows moderate degenerative changes with joint space narrowing.
+Examination revealed mild joint effusion and tenderness over the medial joint line. There is reduced range of movement with flexion limited to 110 degrees. X-ray shows moderate degenerative changes with joint space narrowing.
 
 I would be grateful for your assessment and management recommendations, including consideration for physiotherapy or surgical intervention.
+
+Thank you for seeing this patient.
 
 Yours sincerely,
 
@@ -156,6 +154,15 @@ IMPORTANT FORMATTING RULES:
 - Include relevant clinical details
 - Use appropriate medical terminology
 - Format for direct copy-paste into EMIS/SystmOne
+- SEPARATE EACH SECTION WITH A BLANK LINE. There must be one empty line between the end of one section's content and the next section heading. This is essential for readability.
+
+HOUSE STYLE — WRITE LIKE A REAL UK GP, NOT LIKE AI:
+- Write in the concise, economical style of experienced UK GP notes
+- Be direct and clipped. Real notes are not flowing essays
+- NEVER use these AI filler phrases: "the patient reports that", "it is worth noting", "it should be noted", "additionally", "furthermore", "moreover", "the patient states that", "it was observed that"
+- Vary your sentence structure. Do not start every sentence the same way
+- Drop unnecessary words. "Non-smoker. Drinks socially." is better than "The patient is a non-smoker who consumes alcohol on a social basis"
+- Use standard clinical abbreviations where natural (PMH, NKDA, OE, BP, etc.)
 
 CRITICAL: DO NOT USE HYPHENS OR BULLET POINT SYMBOLS (-, •, *, etc.) anywhere in the output. The History of Presenting Complaint section should have one clinical point per line with no symbol at the start of each line. All other sections must be written in prose format with full sentences.
 
@@ -188,7 +195,6 @@ History of Presenting Complaint:
 - THIS SECTION SHOULD BE DETAILED AND COMPREHENSIVE
 - Write ONE clinical point per line with NO symbol (no hyphen, no bullet, no dash) at the start
 - Each line should be a concise but complete clinical statement
-- Each consecutive line should not start with the same word
 - Include ALL relevant details from the consultation
 - Include timeline (when it started, how it progressed)
 - Include character of symptoms (sharp/dull pain, colour of sputum, etc.)
@@ -242,25 +248,25 @@ Unable to attend work for the past 2 days due to fatigue
 No recent travel, no sick contacts identified
 
 Past Medical History:
-The patient has a history of asthma which is well-controlled, and hypertension.
+Asthma, well-controlled. Hypertension.
 
 Medications:
-Current medications include salbutamol inhaler 100mcg as needed for asthma, and amlodipine 5mg once daily for hypertension.
+Salbutamol 100mcg inhaler PRN. Amlodipine 5mg OD.
 
 Allergies:
-No known drug allergies.
+NKDA.
 
 Social History:
-Non-smoker. Drinks alcohol socially. Works as a teacher.
+Non-smoker. Drinks socially. Teacher.
 
 Examination Findings:
-Temperature 37.8°C. Respiratory rate 18 per minute. Oxygen saturations 96% on room air. Chest examination revealed coarse crackles in the right lower zone. No wheeze heard. Cardiovascular examination unremarkable.
+OE alert and well. Temp 37.8°C, RR 18, sats 96% RA. Coarse crackles right base, no wheeze. HS normal, no peripheral oedema.
 
 Assessment:
-Lower respiratory tract infection, likely community-acquired pneumonia affecting the right lower lobe.
+LRTI, likely right basal community-acquired pneumonia.
 
 Plan:
-Started on oral amoxicillin 500mg three times daily for 7 days. Advised to continue regular paracetamol for fever and pain relief. Encouraged to maintain good fluid intake and rest. Safety netting advice provided regarding worsening breathlessness, chest pain, or persistent high fever. Advised to return if symptoms worsen or do not improve within 48 hours. Fit note provided for 5 days.`;
+Amoxicillin 500mg TDS for 7 days. Regular paracetamol, fluids, rest. Safety-netted re worsening breathlessness, chest pain, or persistent high fever. Review if no better in 48 hours. Fit note issued for 5 days.`;
 
             userPrompt = `Create a structured clinical summary from this GP consultation transcript:\n\n${transcript}`;
         }
@@ -289,7 +295,7 @@ Started on oral amoxicillin 500mg three times daily for 7 days. Advised to conti
                         content: userPrompt
                     }
                 ],
-                temperature: 0.3,
+                temperature: 0.5,
                 max_tokens: 4000
             })
         });
