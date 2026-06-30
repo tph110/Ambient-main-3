@@ -234,21 +234,20 @@ Use plain text format suitable for direct copy-paste into medical records system
 
 EXAMPLE FORMAT (NO HYPHENS OR BULLETS):
 
-Presenting Complaint:
-3-day history of productive cough and fever
-
 History of Presenting Complaint:
-Symptoms began 3 days ago with rhinorrhoea and sore throat, progressing to productive cough within 24 hours
-Cough productive of green sputum, worse at night and disrupting sleep
-Fever documented up to 38.5°C, particularly in the evenings
-Mild shortness of breath on exertion when climbing stairs
-No chest pain, no haemoptysis
-Tried paracetamol and increased fluids with minimal improvement
-Unable to attend work for the past 2 days due to fatigue
-No recent travel, no sick contacts identified
+Patient reports of symptoms beggining 3 days ago with rhinorrhoea and sore throat, progressing to productive cough within 24 hours
+They report the cough as productive of green sputum, worse at night and disrupting sleep
+Fever documented up to 38.5°C, particularly in the evenings, however this is well controlled with paracetamol
+Reports mild shortness of breath on exertion and when climbing stairs but relieved at rest. Denies any respiratory distress at rest 
+Denies any chest pain symptoms and no frank haemoptysis
+Patient has been taking paracetamol regularly and increased oral fluid intake but with minimal improvement
+They have been unable to attend work for the past 2 days due to fatigue and general malaise symptoms
+No recent travel, no sick contacts identified, no recent hospital stays. No known contacts with COVID-19, influenza or MERS. 
 
 Past Medical History:
-Asthma, well-controlled. Hypertension.
+Asthma 
+- Well controlled currently. No recent admissions or exacerbations. No ICU admissions in the past. Typically triggered by pollen
+Hypertension
 
 Medications:
 Salbutamol 100mcg inhaler PRN. Amlodipine 5mg OD.
@@ -257,16 +256,25 @@ Allergies:
 NKDA.
 
 Social History:
-Non-smoker. Drinks socially. Teacher.
+Lives with partner. Non-smoker. Drinks 8 units of alcohol per week. Works as a secondary school Teacher. Does not drive. Does not have any pets. 
 
 Examination Findings:
-OE alert and well. Temp 37.8°C, RR 18, sats 96% RA. Coarse crackles right base, no wheeze. HS normal, no peripheral oedema.
+Patient appeared well and in no respiratory distress. 
+Completing full sentences without difficulty
+Tympanic temperature 37.8C
+Respiratory Rate 18
+Peripheral Oxygen Saturations 96% on room air
+Auscultation revealed good air entry throughout with audible coarse crepitations at the right base not cleared by coughing. No wheezing audible. 
+HS I and II normal with no murmurs or added sounds
+Appears Euvolaemic with no peripheral pitting oedema of raised JVP
 
 Assessment:
-LRTI, likely right basal community-acquired pneumonia.
+Impression is of a lower respiratory tract infection, likely community acquired pneumonia, on a background of Asthma which is well controlled. No evidence of an exacerbation of Asthma currently but patient is at high risk of deterioration
 
 Plan:
-Amoxicillin 500mg TDS for 7 days. Regular paracetamol, fluids, rest. Safety-netted re worsening breathlessness, chest pain, or persistent high fever. Review if no better in 48 hours. Fit note issued for 5 days.`;
+To commence a course of Amoxicillin 500mg TDS for 7 days. No need for atypical cover currently. 
+Advised for regular paracetamol, fluids, rest. 
+Safety-netting advice issued to seek urgent medical attention in case of worsening breathlessness, chest pain, or persistent high fever by calling back and asking for an urgent appointment or alternatively calling 111 or 999. Review if no better in 48 hours. Fit note issued for 5 days Patient happy with plan as above.`;
 
             userPrompt = `Create a structured clinical summary from this GP consultation transcript:\n\n${transcript}`;
         }
