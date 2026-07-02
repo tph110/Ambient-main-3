@@ -13,7 +13,6 @@ export const config = {
 export default async function handler(req, res) {
     console.log('=== Transcribe API Called (Deepgram) ===');
     console.log('Method:', req.method);
-    console.log('Request headers:', req.headers);
 
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -186,7 +185,6 @@ export default async function handler(req, res) {
         console.log('Transcript length:', transcript.length, 'characters');
         console.log('Word count:', words);
         console.log('Confidence:', confidence);
-        console.log('Preview:', transcript.substring(0, 100));
 
         // Return in OpenAI-compatible format (so frontend doesn't need changes)
         return res.status(200).json({
