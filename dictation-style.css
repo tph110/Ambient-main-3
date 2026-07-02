@@ -289,3 +289,96 @@ body.dark-mode .commands-note {
 body.dark-mode .placeholder {
     color: #64748b;
 }
+
+/* ==========================================
+   LETTER TYPE SELECTOR (moved from dictation.html)
+   ========================================== */
+
+.letter-type-selector-pro {
+    margin-bottom: 20px;
+}
+
+.letter-type-selector-pro label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.select-wrapper {
+    position: relative;
+    display: block;
+}
+
+.letter-type-dropdown-pro {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-main);
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: inherit;
+}
+
+.letter-type-dropdown-pro:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+}
+
+.letter-type-dropdown-pro:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.12);
+    background: var(--surface-color);
+}
+
+.select-arrow {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+}
+
+body.dark-mode .letter-type-selector-pro label { color: var(--text-tertiary); }
+body.dark-mode .letter-type-dropdown-pro {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+body.dark-mode .letter-type-dropdown-pro:hover { background: #0f172a; }
+body.dark-mode .select-arrow { color: var(--text-tertiary); }
+
+/* Quiet inline disclaimer (overrides the boxed version above) */
+.ai-disclaimer {
+    background: transparent !important;
+    color: #94a3b8 !important;
+    border: none !important;
+    padding: 8px 0 !important;
+    font-size: 0.875rem !important;
+}
+
+body.dark-mode .ai-disclaimer { color: #64748b !important; }
+body.dark-mode .mic-select-container-inline label { color: #f1f5f9 !important; }
+
+/* Hub Styling */
+.hub-status-text {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

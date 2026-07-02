@@ -101,7 +101,7 @@ RULES:
         try {
             certificate = JSON.parse(clean);
         } catch (e) {
-            console.error('JSON parse error:', e, 'Raw:', clean);
+            console.error('JSON parse error:', e.message);
             return res.status(500).json({ error: 'AI returned malformed data. Please try again.' });
         }
 

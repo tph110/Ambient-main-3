@@ -60,10 +60,10 @@ async function populateMicrophoneDropdown() {
             dropdown.appendChild(option);
         });
     } catch (error) {
-        console.error('Error detecting microphones:', error);
-        dropdown.innerHTML = '<option value="">Microphone access denied</option>';
-        dropdown.disabled = true;
-        statusDiv.textContent = 'Microphone access denied — please allow access in your browser settings and refresh the page.';
+        // Permission not granted yet (or dismissed) — stay calm. It is
+        // requested again on Start, and a real failure is reported there.
+        console.warn('Microphone list unavailable until access is granted:', error);
+        dropdown.innerHTML = '<option value="">Default microphone</option>';
     }
 }
 

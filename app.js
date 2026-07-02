@@ -148,8 +148,10 @@ async function populateMicrophoneDropdown() {
             dropdown.appendChild(option);
         });
     } catch (error) {
-        console.error('Error detecting microphones:', error);
-        statusDiv.textContent = 'Microphone access denied. Please allow microphone access.';
+        // Permission not granted yet (or dismissed) — stay calm. It is
+        // requested again on Start, and a real failure is reported there.
+        console.warn('Microphone list unavailable until access is granted:', error);
+        dropdown.innerHTML = '<option value="">Default microphone</option>';
     }
 }
 
@@ -561,9 +563,9 @@ function resetWorkflow() {
         btn.disabled = true;
     });
     transcriptDiv.innerHTML = '<p class="placeholder">Listening… your words will appear here live.</p>';
-    summaryDiv.innerHTML = '<p class="placeholder">Will generate only on command...</p>';
-    referralLetterDiv.innerHTML = '<p class="placeholder">Will generate only on command...</p>';
-    patientSummaryDiv.innerHTML = '<p class="placeholder">Will generate only on command...</p>';
+    summaryDiv.innerHTML = '<p class="placeholder">Your clinical summary will appear here.</p>';
+    referralLetterDiv.innerHTML = '<p class="placeholder">Your referral letter will appear here.</p>';
+    patientSummaryDiv.innerHTML = '<p class="placeholder">The patient-friendly version will appear here.</p>';
 }
 
 function enableControlButtons() {
@@ -606,6 +608,7 @@ function updateConnectionState(state) {
 
 function updateUI() {
     const recordingOrFinishing = isRecording || finishing;
+    statusDiv.classList.toggle('recording', isRecording && !isPaused);
     startBtn.style.display = recordingOrFinishing ? 'none' : 'inline-block';
     pauseBtn.style.display = isRecording ? 'inline-block' : 'none';
     stopBtn.style.display = isRecording ? 'inline-block' : 'none';
@@ -654,7 +657,7 @@ async function generateAIContent(type, targetDiv, button) {
     }
 
     const originalText = button.innerText;
-    button.innerText = 'AI Thinking...';
+    button.innerText = 'Generating…';
     button.disabled = true;
     targetDiv.style.opacity = '0.5';
 

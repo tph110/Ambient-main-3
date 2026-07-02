@@ -1,14 +1,18 @@
 // File: /api/summarize.js
 // OpenRouter AI endpoint for generating clinical summaries
 
+import { requireAuth } from '../lib/auth.js';
+
 export default async function handler(req, res) {
     console.log('=== Summarize API Called ===');
     console.log('Method:', req.method);
-    
+
     if (req.method !== 'POST') {
         console.log('Error: Method not allowed');
         return res.status(405).json({ error: 'Method not allowed' });
     }
+
+    if (!requireAuth(req, res)) return;
 
     try {
         const { transcript, type } = req.body;

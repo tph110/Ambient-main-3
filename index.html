@@ -103,7 +103,7 @@
                 </div>
                 <div class="card-body">
                     <div id="transcript" class="transcript-box" contenteditable="true">
-                        <p class="placeholder">Awaiting audio input...</p>
+                        <p class="placeholder">Press Start recording — your words will appear here live.</p>
                     </div>
                 </div>
             </div>
@@ -115,14 +115,11 @@
                 <div class="hub-left">
                     <div class="status-indicator">
                         <span class="status-dot"></span>
-                        <span id="hubStatusText">Awaiting Consultation...</span>
+                        <span id="hubStatusText">Ready when you are</span>
                     </div>
                 </div>
                 <div class="hub-center">
-                    <span class="hub-message">Select specific documents to generate below.</span>
-                </div>
-                <div class="hub-right">
-                    <div class="token-saver-badge">Manual Mode Active</div>
+                    <span class="hub-message">Record a consultation, then generate the documents you need below.</span>
                 </div>
             </div>
             
@@ -130,17 +127,15 @@
                 <div class="card-header">
                     <h3>Structured Clinical Summary (SOAP)</h3>
                     <div class="card-actions">
+                        <button id="getSummary" class="btn btn-primary btn-small" type="button">
+                            Generate SOAP note
+                        </button>
                         <button id="copySummary" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy SOAP note"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div id="summary" class="output-content" contenteditable="true">
-                        <p class="placeholder">Will generate only on command...</p>
-                    </div>
-                    <div class="manual-trigger-area">
-                        <button id="getSummary" class="btn btn-primary btn-small" type="button">
-                            Generate SOAP note
-                        </button>
+                        <p class="placeholder">Your clinical summary will appear here.</p>
                     </div>
                 </div>
             </div>
@@ -149,17 +144,15 @@
                 <div class="card-header">
                     <h3>Referral Letter</h3>
                     <div class="card-actions">
+                        <button id="generateReferral" class="btn btn-primary btn-small" type="button">
+                            Generate referral letter
+                        </button>
                         <button id="copyReferral" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy referral letter"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div id="referralLetter" class="output-content document-paper" contenteditable="true">
-                        <p class="placeholder">Will generate only on command...</p>
-                    </div>
-                    <div class="manual-trigger-area">
-                        <button id="generateReferral" class="btn btn-primary btn-small" type="button">
-                            Generate referral letter
-                        </button>
+                        <p class="placeholder">Your referral letter will appear here.</p>
                     </div>
                 </div>
             </div>
@@ -168,17 +161,15 @@
                 <div class="card-header">
                     <h3>Patient Friendly Summary</h3>
                     <div class="card-actions">
+                        <button id="generatePatientSummary" class="btn btn-primary btn-small" type="button">
+                            Generate patient version
+                        </button>
                         <button id="copyPatientSummary" class="btn-icon" title="Copy to clipboard" type="button" aria-label="Copy patient summary"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div id="patientSummary" class="output-content" contenteditable="true">
-                        <p class="placeholder">Will generate only on command...</p>
-                    </div>
-                    <div class="manual-trigger-area">
-                        <button id="generatePatientSummary" class="btn btn-primary btn-small" type="button">
-                            Generate patient version
-                        </button>
+                        <p class="placeholder">The patient-friendly version will appear here.</p>
                     </div>
                 </div>
             </div>
