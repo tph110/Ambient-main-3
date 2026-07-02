@@ -347,9 +347,10 @@ async function connectDeepgram() {
         });
 
         // Temporary token is passed via the WebSocket subprotocol (browser-safe).
+        // Granted access tokens use 'bearer'; only raw API keys use 'token'.
         const socket = new WebSocket(
             `wss://api.deepgram.com/v1/listen?${params.toString()}`,
-            ['token', token]
+            ['bearer', token]
         );
         socket.binaryType = 'arraybuffer';
 
