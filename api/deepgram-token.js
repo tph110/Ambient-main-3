@@ -45,6 +45,11 @@ export default async function handler(req, res) {
                     error: 'Invalid Deepgram API key. Please check DEEPGRAM_API_KEY in Vercel environment variables.'
                 });
             }
+            if (response.status === 403) {
+                return res.status(403).json({
+                    error: 'This Deepgram API key cannot mint temporary tokens. Create a new key with the "Member" role in the Deepgram Console and update DEEPGRAM_API_KEY in Vercel.'
+                });
+            }
             return res.status(response.status).json({
                 error: `Failed to mint Deepgram token (${response.status}): ${errText.substring(0, 200)}`
             });
