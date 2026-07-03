@@ -680,12 +680,33 @@ async function generateAIContent(type, targetDiv, button) {
         const data = await response.json();
 
         if (data.summary) {
-            // Build the output with textContent per line so API content can never
-            // execute as HTML, while preserving line breaks.
+            // Build the output safely (textContent so API content can never run as
+            // HTML) while giving each SOAP section clear visual separation.
             targetDiv.innerHTML = '';
-            data.summary.split('\n').forEach(line => {
+
+            // Known section headings — when a line is one of these, we start a new
+            // visually-spaced block and show the heading in bold.
+            const headings = [
+                'Presenting Complaint:',
+                'History of Presenting Complaint:',
+                'Past Medical History:',
+                'Medications:',
+                'Allergies:',
+                'Social History:',
+                'Examination Findings:',
+                'Assessment:',
+                'Plan:',
+                'Recording Notes:'
+            ];
+
+            data.summary.split('\n').forEach(rawLine => {
+                const line = rawLine.trim();
+                if (line === '') return; // skip blank lines; spacing comes from CSS
+
+                const isHeading = headings.includes(line);
                 const p = document.createElement('p');
                 p.textContent = line;
+                p.className = isHeading ? 'summary-heading' : 'summary-line';
                 targetDiv.appendChild(p);
             });
         } else {
