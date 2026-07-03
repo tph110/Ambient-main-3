@@ -1514,3 +1514,19 @@ body.dark-mode .placeholder-cert .placeholder-icon {
     background: rgba(3, 105, 161, 0.2);
     border-color: var(--border-color);
 }
+
+/* ── Clinical summary layout ──────────────────────────────────────────
+   Gives each SOAP section clear separation so the note is easy to scan
+   and review, rather than appearing as one block of text.              */
+.summary-heading {
+    font-weight: 700;
+    margin: 1.4em 0 0.35em 0;   /* big gap ABOVE each heading */
+    line-height: 1.4;
+}
+.summary-heading:first-child {
+    margin-top: 0;              /* no gap before the very first heading */
+}
+.summary-line {
+    margin: 0 0 0.3em 0;       /* tight spacing between content lines */
+    line-height: 1.5;
+}
