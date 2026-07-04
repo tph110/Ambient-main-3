@@ -99,19 +99,19 @@ Dear Colleague,
 
 Re: Mrs Jane Smith, DoB: 15/03/1960, NHS No: 123 456 7890
 
-I would be grateful if you could see this patient regarding chronic right knee pain.
+I would be grateful if you could review this 48 year old lady regarding her chronic right knee pain.
 
 Mrs Smith has been experiencing progressive right knee pain for the past six months. The pain is worse on weight-bearing and after prolonged sitting, and she reports hearing clicking sounds when walking. She has tried paracetamol and ibuprofen with minimal benefit, and the pain is now significantly impacting her ability to work as a teacher.
 
 Her past medical history includes hypertension, well-controlled on ramipril 5mg once daily. She has no known drug allergies. She is a non-smoker and drinks alcohol socially.
 
-Examination revealed mild joint effusion and tenderness over the medial joint line. There is reduced range of movement with flexion limited to 110 degrees. X-ray shows moderate degenerative changes with joint space narrowing.
+On examination on her right knee, she had a mild joint effusion and tenderness over the medial joint line. There is reduced range of movement with flexion limited to 110 degrees. 
 
-I would be grateful for your assessment and management recommendations, including consideration for physiotherapy or surgical intervention.
+In terms of her investigations, Mrs Smith has had a right knee X-ray which identified moderate degenerative changes with joint space narrowing.
 
-Thank you for seeing this patient.
+I would be grateful for your assessment to determine the most likely diagnosis, if any further investigations are required and how best to manage these symptoms going forwards.
 
-Yours sincerely,
+Kind regards,
 
 [Doctor's name]
 [Practice name]`;
