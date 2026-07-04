@@ -42,20 +42,18 @@ Re: [Patient name and DoB if present in notes, otherwise use "[Patient name]" as
 [Opening sentence: briefly state the reason for referral]
 
 [Paragraph 1 — Presenting complaint and history:
-Write in full sentences about the current problem — onset, duration, progression, key symptoms, severity, impact on daily life.]
+Write in full sentences about the current problem — onset, duration, progression, key symptoms, severity, impact on daily life. E.g. "Please could you review this 48 year old gentleman who presents with a 5 month history of a painful left knee"]
 
 [Paragraph 2 — Background and relevant history:
-Include relevant past medical history, current medications, allergies (or NKDA if no known drug allergies), and relevant social history (developmental history if a child). Write as a narrative paragraph.]
+Include relevant past medical history, current medications, allergies (or NKDA if no known drug allergies), and relevant social history (developmental history if a child). Write as a narrative paragraph. E.g. "In terms of his past medical history, he has a background of hypertension which is currently well managed with Ramipril 5mg"]
 
 [Paragraph 3 — Examination and investigations (if mentioned in the notes):
 Describe any findings or tests already done. If none are mentioned, you may omit this paragraph.]
 
 [Paragraph 4 — Closing request:
-State clearly what you are asking the specialist to do. E.g. "I would be grateful for your assessment and further management advice."]
+State clearly what you are asking the specialist to do. E.g. "I would be grateful for your assessment to determine the most likely diagnosis, if any further investigations are required and how best to manage these symptoms going forwards."]
 
-Thank you for seeing this patient.
-
-Yours sincerely,
+Kind regards,
 
 [Doctor's name — to be completed]
 
