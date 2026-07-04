@@ -7,8 +7,6 @@
     <meta name="description" content="RoboDoc listens to your consultation live and surfaces real-time clinical prompts, red flags and questions to ask.">
 
     <link rel="stylesheet" href="styles.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -29,10 +27,10 @@
             <div class="navbar-right">
                 <div class="nav-links">
                     <a href="index.html" class="nav-link">Clinical Scribe</a>
-                    <a href="robodoc.html" class="nav-link active">RoboDoc</a>
                     <a href="dictation.html" class="nav-link">AI Dictation</a>
                     <a href="notes-referral.html" class="nav-link">Notes to Referral</a>
                     <a href="certificate.html" class="nav-link">Certificate Generator</a>
+                    <a href="robodoc.html" class="nav-link active">RoboDoc</a>
                 </div>
 
                 <div class="dark-mode-toggle">
@@ -101,22 +99,13 @@
 
         <main class="panel-right">
 
-            <div id="processingHub" class="processing-hub inactive">
-                <div class="hub-left">
-                    <div class="status-indicator">
-                        <span class="status-dot"></span>
-                        <span id="hubStatusText">RoboDoc is on standby</span>
-                    </div>
-                </div>
-                <div class="hub-center">
-                    <span class="hub-message" id="analysisStatus">Start listening and RoboDoc will surface live clinical prompts as the consultation unfolds.</span>
-                </div>
-            </div>
-
             <div class="card output-card robodoc-card">
                 <div class="card-header">
                     <h3>Live Clinical Prompts <span id="promptCount" class="robodoc-count" style="display:none;">0</span></h3>
-                    <button id="clearPrompts" class="btn-icon" title="Clear prompts" type="button" aria-label="Clear prompts"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                    <div class="card-actions">
+                        <span id="analysisStatus" class="robodoc-status-chip"><span class="robodoc-chip-dot" aria-hidden="true"></span><span id="analysisStatusText">Standby</span></span>
+                        <button id="clearPrompts" class="btn-icon" title="Clear prompts" type="button" aria-label="Clear prompts"><svg class="icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div id="promptsFeed" class="robodoc-feed">

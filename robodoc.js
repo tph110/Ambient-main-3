@@ -13,9 +13,8 @@ const statusDiv = document.getElementById('status');
 const transcriptDiv = document.getElementById('transcript');
 const promptsFeed = document.getElementById('promptsFeed');
 const promptCountEl = document.getElementById('promptCount');
-const analysisStatusEl = document.getElementById('analysisStatus');
-const processingHub = document.getElementById('processingHub');
-const hubStatusText = document.getElementById('hubStatusText');
+const statusChip = document.getElementById('analysisStatus');
+const statusChipText = document.getElementById('analysisStatusText');
 
 // --- STATE (streaming) ---
 let audioContext = null;
@@ -492,15 +491,13 @@ function finalizeSession() {
     renderLiveTranscript();
     if (finalTranscript.trim()) {
         statusDiv.textContent = 'Session complete';
-        hubStatusText.innerText = 'Session ended';
-        setAnalysisStatus('RoboDoc has stopped listening. Prompts above remain for your review.');
+        setChip('Session ended');
         // One last look at the full conversation, catching anything said since
         // the previous analysis window.
         runAnalysis(true);
     } else {
         statusDiv.textContent = 'No speech captured';
-        hubStatusText.innerText = 'No transcript captured';
-        setAnalysisStatus('Nothing was captured — check your microphone and try again.');
+        setChip('Standby');
     }
 }
 
@@ -516,7 +513,6 @@ function startAnalysisLoop() {
 
 function stopAnalysisLoop() {
     if (analysisInterval) { clearInterval(analysisInterval); analysisInterval = null; }
-    setAnalysisIndicator(false);
 }
 
 function analysisTick() {
@@ -535,7 +531,7 @@ async function runAnalysis(isFinalPass) {
 
     analysisInFlight = true;
     const analyzedLength = finalTranscript.length;
-    setAnalysisIndicator(true);
+    setChip('Analysing…', 'analysing');
 
     const anonymize = document.getElementById('anonymizeCheckbox')?.checked;
     const content = anonymize ? anonymizeTranscript(transcript) : transcript;
@@ -562,24 +558,18 @@ async function runAnalysis(isFinalPass) {
 
         const fresh = (data.prompts || []).filter(p => !isDuplicatePrompt(p.title));
         fresh.forEach(addPromptCard);
-
-        if (shownPrompts.length === 0) {
-            setAnalysisStatus('RoboDoc is listening — no prompts needed yet.');
-        } else if (fresh.length === 0 && !isFinalPass) {
-            setAnalysisStatus('RoboDoc is listening — nothing new to add.');
-        }
+        setChip(isRecording ? (isPaused ? 'Paused' : 'Listening') : 'Session ended');
     } catch (err) {
         console.error('RoboDoc analysis error:', err);
         analysisFailures++;
         lastAnalysisTime = Date.now(); // still wait before retrying
         if (analysisFailures >= MAX_ANALYSIS_FAILURES) {
-            setAnalysisStatus('Live prompts unavailable (analysis keeps failing) — transcription continues normally.');
+            setChip('Prompts unavailable', 'error');
         } else {
-            setAnalysisStatus('Analysis hiccup — retrying shortly. Transcription is unaffected.');
+            setChip('Retrying…', 'error');
         }
     } finally {
         analysisInFlight = false;
-        setAnalysisIndicator(false);
     }
 }
 
@@ -651,19 +641,6 @@ function addPromptCard(prompt) {
         promptCountEl.style.display = 'inline-flex';
     }
 
-    setAnalysisStatus(prompt.category === 'red_flag'
-        ? 'Red flag surfaced — review the latest prompt.'
-        : 'New prompt added.');
-
-    if (window.anime) {
-        anime({
-            targets: card,
-            translateY: [-14, 0],
-            opacity: [0, 1],
-            duration: 500,
-            easing: 'easeOutExpo'
-        });
-    }
 }
 
 function elapsedLabel() {
@@ -683,14 +660,14 @@ function resetPrompts() {
     }
 }
 
-function setAnalysisStatus(text) {
-    if (analysisStatusEl) analysisStatusEl.textContent = text;
-}
-
-function setAnalysisIndicator(active) {
-    processingHub.classList.toggle('robodoc-analysing', !!active);
-    if (active) hubStatusText.innerText = 'RoboDoc is analysing the conversation…';
-    else if (isRecording) hubStatusText.innerText = isPaused ? 'Paused' : 'RoboDoc is listening';
+// Compact status chip in the prompts card header.
+// States: default, 'analysing' (pulsing dot) and 'error'.
+function setChip(text, state = '') {
+    if (statusChipText) statusChipText.textContent = text;
+    if (statusChip) {
+        statusChip.classList.toggle('is-analysing', state === 'analysing');
+        statusChip.classList.toggle('is-error', state === 'error');
+    }
 }
 
 function anonymizeTranscript(text) {
@@ -712,30 +689,24 @@ function resetTranscriptState() {
     transcriptDiv.innerHTML = '<p class="placeholder">Listening… the conversation will appear here live.</p>';
 }
 
+// Connection health goes to the left-panel status; the chip only reflects it
+// while a session is live (don't clobber 'Analysing…' — it resolves itself).
 function updateConnectionState(state) {
-    const dot = processingHub.querySelector('.status-dot');
-    processingHub.classList.remove('inactive');
-    processingHub.classList.add('active');
-
     switch (state) {
         case 'connecting':
-            hubStatusText.innerText = 'Connecting to transcription service...';
-            if (dot) dot.style.background = '';
+            if (isRecording) statusDiv.textContent = 'Connecting...';
             break;
         case 'connected':
-            hubStatusText.innerText = isPaused ? 'Paused' : 'RoboDoc is listening';
-            if (dot) dot.style.background = '';
-            if (isRecording) statusDiv.textContent = isPaused ? 'Paused' : 'Listening...';
+            if (isRecording) {
+                statusDiv.textContent = isPaused ? 'Paused' : 'Listening...';
+                if (!analysisInFlight) setChip(isPaused ? 'Paused' : 'Listening');
+            }
             break;
         case 'reconnecting':
-            hubStatusText.innerText = 'Connection lost — buffering audio, reconnecting...';
-            if (dot) dot.style.background = '#f59e0b';
             if (isRecording) statusDiv.textContent = 'Reconnecting...';
             break;
         case 'reconnecting-long':
-            hubStatusText.innerText = 'Still reconnecting — audio is being saved locally. Please check your connection.';
-            if (dot) dot.style.background = '#ef4444';
-            if (isRecording) statusDiv.textContent = 'Reconnecting...';
+            if (isRecording) statusDiv.textContent = 'Reconnecting — audio is being saved locally...';
             break;
     }
 }
