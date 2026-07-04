@@ -682,32 +682,36 @@ async function generateAIContent(type, targetDiv, button) {
         if (data.summary) {
             // Build the output safely (textContent so API content can never run as
             // HTML) while giving each SOAP section clear visual separation.
+            // Spacing and bolding are applied as inline styles so they can NEVER be
+            // overridden by stylesheet conflicts or stale cached CSS.
             targetDiv.innerHTML = '';
 
-            // Known section headings — when a line is one of these, we start a new
-            // visually-spaced block and show the heading in bold.
-            const headings = [
-                'Presenting Complaint:',
-                'History of Presenting Complaint:',
-                'Past Medical History:',
-                'Medications:',
-                'Allergies:',
-                'Social History:',
-                'Examination Findings:',
-                'Assessment:',
-                'Plan:',
-                'Recording Notes:'
-            ];
+            // A heading is any reasonably short line ending in ':' — this catches
+            // all current section names AND any renamed/added ones in future.
+            const looksLikeHeading = (line) =>
+                line.endsWith(':') && line.length <= 45 && !line.includes('. ');
+
+            let isFirstElement = true;
 
             data.summary.split('\n').forEach(rawLine => {
                 const line = rawLine.trim();
-                if (line === '') return; // skip blank lines; spacing comes from CSS
+                if (line === '') return; // spacing handled below, not by blank lines
 
-                const isHeading = headings.includes(line);
                 const p = document.createElement('p');
                 p.textContent = line;
-                p.className = isHeading ? 'summary-heading' : 'summary-line';
+
+                if (looksLikeHeading(line)) {
+                    p.style.fontWeight = '700';
+                    p.style.marginTop = isFirstElement ? '0' : '1.3em';
+                    p.style.marginBottom = '0.3em';
+                    p.style.lineHeight = '1.4';
+                } else {
+                    p.style.margin = '0 0 0.25em 0';
+                    p.style.lineHeight = '1.55';
+                }
+
                 targetDiv.appendChild(p);
+                isFirstElement = false;
             });
         } else {
             throw new Error('No summary returned from AI');
