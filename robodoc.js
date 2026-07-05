@@ -176,6 +176,8 @@ async function startRecording() {
         resetTranscriptState();
         resetPrompts();
 
+        const telephoneMode = document.getElementById('telephoneModeCheckbox')?.checked;
+
         audioContext = new AudioCtx();
         deviceSampleRate = audioContext.sampleRate;
 
@@ -194,11 +196,29 @@ async function startRecording() {
         workletNode.connect(silentGain);
         silentGain.connect(audioContext.destination);
 
-        const micStream = await navigator.mediaDevices.getUserMedia({
-            audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true
-        });
-        mediaStreams.push(micStream);
-        audioContext.createMediaStreamSource(micStream).connect(workletNode);
+        if (telephoneMode) {
+            // Telephone consult: capture system audio (the patient's voice
+            // coming through the call software) via screen share, mixed with
+            // the clinician's microphone — same approach as the Clinical Scribe.
+            const screenStream = await navigator.mediaDevices.getDisplayMedia({
+                video: true,
+                audio: { echoCancellation: true, noiseSuppression: true }
+            });
+            const micStream = await navigator.mediaDevices.getUserMedia({
+                audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true
+            });
+            mediaStreams.push(screenStream, micStream);
+            audioContext.createMediaStreamSource(micStream).connect(workletNode);
+            if (screenStream.getAudioTracks().length > 0) {
+                audioContext.createMediaStreamSource(screenStream).connect(workletNode);
+            }
+        } else {
+            const micStream = await navigator.mediaDevices.getUserMedia({
+                audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true
+            });
+            mediaStreams.push(micStream);
+            audioContext.createMediaStreamSource(micStream).connect(workletNode);
+        }
 
         isRecording = true;
         isPaused = false;
