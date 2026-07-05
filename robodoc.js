@@ -61,11 +61,13 @@ let lastAnalysisTime = 0;
 let analysisFailures = 0;       // consecutive failures — back off, don't spam alerts
 let shownPrompts = [];          // [{category, title, detail}] in arrival order
 
-// How often RoboDoc looks at the conversation. Each analysis is one AI call,
-// so these gate both responsiveness and cost.
-const ANALYSIS_TICK_MS = 5000;          // how often we check whether to analyse
-const MIN_ANALYSIS_GAP_MS = 15000;      // at most one AI call per 15s
-const MIN_NEW_CHARS = 60;               // need this much new speech to bother
+// How often RoboDoc looks at the conversation. Analysis fires as soon as a
+// finalized transcript segment arrives (event-driven); the interval is only a
+// fallback. Each analysis is one AI call, so the gap/chars thresholds gate
+// both responsiveness and cost.
+const ANALYSIS_TICK_MS = 3000;          // fallback poll (event-driven path is primary)
+const MIN_ANALYSIS_GAP_MS = 8000;       // at most one AI call per 8s
+const MIN_NEW_CHARS = 30;               // ~5-6 words of new speech is enough
 const MAX_ANALYSIS_FAILURES = 3;        // stop trying after repeated errors
 
 // Reusable AudioWorklet module (inlined so there is no extra file to deploy).
@@ -448,6 +450,11 @@ function handleDeepgramMessage(msg) {
         interimTranscript = text;
     }
     renderLiveTranscript();
+
+    // Event-driven analysis: react the moment new finalized speech lands
+    // rather than waiting for the next poll. maybeAnalyze() applies the
+    // gap/threshold guards, so this stays cheap and rate-limited.
+    if (msg.is_final && text) maybeAnalyze();
 }
 
 function appendFinalSegment(alt) {
@@ -516,6 +523,10 @@ function stopAnalysisLoop() {
 }
 
 function analysisTick() {
+    maybeAnalyze();
+}
+
+function maybeAnalyze() {
     if (!isRecording || isPaused || analysisInFlight) return;
     if (analysisFailures >= MAX_ANALYSIS_FAILURES) return;
     if (Date.now() - lastAnalysisTime < MIN_ANALYSIS_GAP_MS) return;

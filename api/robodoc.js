@@ -107,7 +107,10 @@ Return new prompts as JSON now.`;
                     { role: 'user', content: userPrompt }
                 ],
                 temperature: 0.3,
-                max_tokens: 800
+                // Prompts are live decision support: bound the response tightly
+                // and prefer the fastest upstream provider over the cheapest.
+                max_tokens: 500,
+                provider: { sort: 'latency' }
             })
         });
 
