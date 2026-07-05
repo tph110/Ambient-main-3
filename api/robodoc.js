@@ -31,10 +31,11 @@ RULES:
 - Quality over quantity: return at most 3 new prompts per call, and it is normal to return none.
 - If the clinician has already asked about something in the transcript, do not prompt for it.
 - Keep "title" under 60 characters and "detail" to one or two short sentences.
+- If a prompt references a named clinical tool, score or mnemonic (e.g. SNOOP, CURB-65, Wells score, FeverPAIN, PHQ-9, QRISK3), put its common name in an optional "tool" field so the app can link the clinician to reference information. Name only — NEVER include URLs anywhere in your output.
 
 OUTPUT FORMAT — CRITICAL:
 Respond with ONLY a valid JSON object, no markdown fences, no commentary:
-{"prompts":[{"category":"ask","title":"Screen for meningitis red flags","detail":"Ask about neck stiffness, photophobia, drowsiness and any non-blanching rash."}]}
+{"prompts":[{"category":"ask","title":"Screen for meningitis red flags","detail":"Ask about neck stiffness, photophobia, drowsiness and any non-blanching rash."},{"category":"consider","title":"Consider headache red flag tool","detail":"Use a structured tool like SNOOP to systematically assess for serious pathology.","tool":"SNOOP"}]}
 If there is nothing new worth prompting, respond with exactly: {"prompts":[]}`;
 
 // The model is asked for bare JSON, but be tolerant of code fences or stray
@@ -57,6 +58,13 @@ function extractJson(text) {
 }
 
 const VALID_CATEGORIES = new Set(['red_flag', 'ask', 'examine', 'consider']);
+
+// Reference link for a named clinical tool. The model supplies only the tool
+// NAME (never URLs, which it could hallucinate); the link is always a search
+// on a fixed, trusted domain so it can never point somewhere unexpected.
+function toolLookupUrl(tool) {
+    return 'https://www.google.com/search?q=' + encodeURIComponent(`${tool} clinical tool`);
+}
 
 export default async function handler(req, res) {
     console.log('=== RoboDoc API Called ===');
@@ -140,11 +148,16 @@ Return new prompts as JSON now.`;
         const prompts = parsed.prompts
             .filter(p => p && typeof p.title === 'string' && p.title.trim())
             .slice(0, 3)
-            .map(p => ({
-                category: VALID_CATEGORIES.has(p.category) ? p.category : 'consider',
-                title: String(p.title).trim().substring(0, 120),
-                detail: typeof p.detail === 'string' ? p.detail.trim().substring(0, 400) : ''
-            }));
+            .map(p => {
+                const tool = typeof p.tool === 'string' ? p.tool.trim().substring(0, 60) : '';
+                return {
+                    category: VALID_CATEGORIES.has(p.category) ? p.category : 'consider',
+                    title: String(p.title).trim().substring(0, 120),
+                    detail: typeof p.detail === 'string' ? p.detail.trim().substring(0, 400) : '',
+                    tool,
+                    toolUrl: tool ? toolLookupUrl(tool) : ''
+                };
+            });
 
         console.log(`RoboDoc returned ${prompts.length} new prompt(s)`);
         return res.status(200).json({ prompts });

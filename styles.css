@@ -1613,6 +1613,21 @@ body.dark-mode .placeholder-cert .placeholder-icon {
     line-height: 1.55;
 }
 
+.robodoc-prompt-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.robodoc-prompt-link:hover {
+    text-decoration: underline;
+}
+body.dark-mode .robodoc-prompt-link {
+    color: #7dd3fc;
+}
+
 /* Category colours */
 .robodoc-prompt-redflag {
     border-left-color: #dc2626;

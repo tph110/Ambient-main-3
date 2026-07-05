@@ -644,6 +644,19 @@ function addPromptCard(prompt) {
         card.appendChild(detail);
     }
 
+    // Reference link when the prompt names a clinical tool (SNOOP, CURB-65…).
+    // The URL is built server-side on a fixed trusted domain; the https check
+    // is a belt-and-braces guard against anything else slipping through.
+    if (prompt.tool && prompt.toolUrl && /^https:\/\//i.test(prompt.toolUrl)) {
+        const link = document.createElement('a');
+        link.className = 'robodoc-prompt-link';
+        link.href = prompt.toolUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = `Look up ${prompt.tool} ↗`;
+        card.appendChild(link);
+    }
+
     // Newest prompts appear at the top of the feed
     promptsFeed.insertBefore(card, promptsFeed.firstChild);
 
