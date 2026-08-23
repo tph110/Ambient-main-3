@@ -2,6 +2,7 @@
 // OpenRouter AI endpoint for generating clinical summaries
 
 import { requireAuth } from '../lib/auth.js';
+import { LLM_MODEL } from '../lib/config.js';
 
 export default async function handler(req, res) {
     console.log('=== Summarize API Called ===');
@@ -196,7 +197,18 @@ Presenting Complaint:
 - Example: "3-day history of productive cough and fever"
 
 History of Presenting Complaint:
-- THIS SECTION SHOULD BE DETAILED AND COMPREHENSIVE
+- THIS SECTION MUST BEGIN WITH A SINGLE SENTENCE SUMMARY LINE, then a blank line, then the full history as normal
+
+  RULES FOR THE SUMMARY LINE:
+  One sentence, under 30 words
+  Format: [age] [sex] with a background of [relevant PMH], presenting with [main problem] over [duration]
+  Use only details actually stated in the transcript. If age or sex is not mentioned, write "[age]" or omit that element. NEVER guess
+  Include only past history that is relevant to today's problem, not the full problem list. If none is relevant, omit that clause
+  Describe the presenting problem in the patient's terms. Do NOT state or imply a diagnosis in this line
+  No heading or label above it. It is simply the first line of the section
+  Example: 48 year old lady with a background of asthma, presenting with a worsening cough over the past 14 days.
+
+- AFTER the summary line and the blank line, THE HISTORY ITSELF SHOULD BE DETAILED AND COMPREHENSIVE
 - Write ONE clinical point per line with NO symbol (no hyphen, no bullet, no dash) at the start
 - Each line should be a concise but complete clinical statement
 - Include ALL relevant details from the consultation
@@ -239,6 +251,8 @@ Use plain text format suitable for direct copy-paste into medical records system
 EXAMPLE FORMAT (NO HYPHENS OR BULLETS):
 
 History of Presenting Complaint:
+48 year old lady with a background of asthma, presenting with a productive cough and fever over the past 3 days.
+
 Patient reports of symptoms beggining 3 days ago with rhinorrhoea and sore throat, progressing to productive cough within 24 hours
 They report the cough as productive of green sputum, worse at night and disrupting sleep
 Fever documented up to 38.5°C, particularly in the evenings, however this is well controlled with paracetamol
@@ -284,7 +298,7 @@ Safety-netting advice issued to seek urgent medical attention in case of worseni
         }
 
         console.log('Calling OpenRouter API...');
-        console.log('Using model: deepseek/deepseek-v3.2');
+        console.log(`Using model: ${LLM_MODEL}`);
 
         // Call OpenRouter API
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -296,7 +310,7 @@ Safety-netting advice issued to seek urgent medical attention in case of worseni
                 'X-Title': 'EchoDoc Clinical Scribe'
             },
             body: JSON.stringify({
-                model: 'deepseek/deepseek-v3.2',
+                model: LLM_MODEL,
                 messages: [
                     {
                         role: 'system',
