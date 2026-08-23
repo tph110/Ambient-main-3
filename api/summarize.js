@@ -211,6 +211,7 @@ History of Presenting Complaint:
 - AFTER the summary line and the blank line, THE HISTORY ITSELF SHOULD BE DETAILED AND COMPREHENSIVE
 - Write ONE clinical point per line with NO symbol (no hyphen, no bullet, no dash) at the start
 - Each line should be a concise but complete clinical statement
+- VARY THE OPENING OF EACH LINE. Do not start consecutive lines with the same word. Never start every line with "He", "She", "They" or "Patient" — instead lead with the clinical detail itself (e.g. "Symptoms began 3 weeks ago", "Cough worst in early morning", "No chest pain", "Previously tried amoxicillin twice without effect")
 - Include ALL relevant details from the consultation
 - Include timeline (when it started, how it progressed)
 - Include character of symptoms (sharp/dull pain, colour of sputum, etc.)
@@ -253,14 +254,14 @@ EXAMPLE FORMAT (NO HYPHENS OR BULLETS):
 History of Presenting Complaint:
 48 year old lady with a background of asthma, presenting with a productive cough and fever over the past 3 days.
 
-Patient reports of symptoms beggining 3 days ago with rhinorrhoea and sore throat, progressing to productive cough within 24 hours
-They report the cough as productive of green sputum, worse at night and disrupting sleep
+Symptoms began 3 days ago with rhinorrhoea and sore throat, progressing to productive cough within 24 hours
+Cough productive of green sputum, worse at night and disrupting sleep
 Fever documented up to 38.5°C, particularly in the evenings, however this is well controlled with paracetamol
-Reports mild shortness of breath on exertion and when climbing stairs but relieved at rest. Denies any respiratory distress at rest 
-Denies any chest pain symptoms and no frank haemoptysis
-Patient has been taking paracetamol regularly and increased oral fluid intake but with minimal improvement
-They have been unable to attend work for the past 2 days due to fatigue and general malaise symptoms
-No recent travel, no sick contacts identified, no recent hospital stays. No known contacts with COVID-19, influenza or MERS. 
+Mild shortness of breath on exertion and when climbing stairs but relieved at rest. Denies any respiratory distress at rest
+No chest pain symptoms and no frank haemoptysis
+Has been taking paracetamol regularly and increased oral fluid intake but with minimal improvement
+Unable to attend work for the past 2 days due to fatigue and general malaise symptoms
+No recent travel, no sick contacts identified, no recent hospital stays. No known contacts with COVID-19, influenza or MERS.
 
 Past Medical History:
 Asthma 
