@@ -264,9 +264,7 @@ Unable to attend work for the past 2 days due to fatigue and general malaise sym
 No recent travel, no sick contacts identified, no recent hospital stays. No known contacts with COVID-19, influenza or MERS.
 
 Past Medical History:
-Asthma 
-- Well controlled currently. No recent admissions or exacerbations. No ICU admissions in the past. Typically triggered by pollen
-Hypertension
+Asthma, well controlled currently. No recent admissions or exacerbations. No ICU admissions in the past. Typically triggered by pollen. Hypertension.
 
 Medications:
 Salbutamol 100mcg inhaler PRN. Amlodipine 5mg OD.
@@ -323,7 +321,11 @@ Safety-netting advice issued to seek urgent medical attention in case of worseni
                     }
                 ],
                 temperature: 0.5,
-                max_tokens: 4000
+                // Raised from 4000 so a long note is never cut off.
+                max_tokens: 8000,
+                // Stops the model spending its token budget on hidden "thinking".
+                // If OpenRouter rejects this for the model, use { effort: 'low' } instead.
+                reasoning: { enabled: false }
             })
         });
 
@@ -348,7 +350,15 @@ Safety-netting advice issued to seek urgent medical attention in case of worseni
         console.log('OpenRouter response received successfully');
 
         // Extract summary
-        const summary = data.choices?.[0]?.message?.content;
+        const choice = data.choices?.[0];
+
+        // Diagnostic logging: structure only, no patient content
+        console.log('finish_reason:', choice?.finish_reason);
+        console.log('content length:', choice?.message?.content?.length ?? 0);
+        console.log('has reasoning field:', !!choice?.message?.reasoning);
+        console.log('usage:', JSON.stringify(data.usage));
+
+        const summary = choice?.message?.content;
 
         if (!summary || summary.trim() === '') {
             console.error('Empty summary received from AI');
